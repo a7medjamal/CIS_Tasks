@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sqflite/sqflite.dart';
 import 'package:to_do_list_with_sqlite/core/utils/date_utils.dart';
 import 'package:to_do_list_with_sqlite/presentation/screens/widgets/add_todo_sheet.dart';
 import 'package:to_do_list_with_sqlite/presentation/screens/widgets/todo_empty_state.dart';
@@ -10,11 +11,13 @@ import '../../domain/entities/todo.dart';
 class HomePage extends StatelessWidget {
   final GetAllTodos getAllTodos;
   final InsertTodo insertTodo;
+  final Database database;
 
   const HomePage({
     super.key,
     required this.getAllTodos,
     required this.insertTodo,
+    required this.database,
   });
 
   @override
@@ -36,7 +39,7 @@ class HomePage extends StatelessWidget {
           if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return const TodoEmptyState();
           }
-          return TodoListView(todos: snapshot.data!);
+          return TodoListView(todos: snapshot.data!, database: database);
         },
       ),
       floatingActionButton: FloatingActionButton(

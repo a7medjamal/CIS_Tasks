@@ -2,33 +2,51 @@ import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 import '../../../domain/entities/todo.dart';
 
-class TodoListView extends StatelessWidget {
+class TodoListView extends StatefulWidget {
   final List<Todo> todos;
+  final Database database;
 
-  const TodoListView({super.key, required this.todos});
+  const TodoListView({super.key, required this.todos, required this.database});
+
+  @override
+  State<TodoListView> createState() => _TodoListViewState();
+}
+
+class _TodoListViewState extends State<TodoListView> {
+  late List<Todo> _todos;
+
+  @override
+  void initState() {
+    super.initState();
+    _todos = List.from(widget.todos);
+  }
+
+  Future<void> _deleteTodo(Todo todo) async {
+    await widget.database.delete(
+      'todos',
+      where: 'id = ?',
+      whereArgs: [todo.id],
+    );
+
+    setState(() {
+      _todos.remove(todo);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      itemCount: todos.length,
+      itemCount: _todos.length,
       itemBuilder: (_, index) {
-        final todo = todos[index];
+        final todo = _todos[index];
         return Column(
           children: [
             ListTile(
-              leading: Transform.scale(
-                scale: 1.5,
-                child: Checkbox(
-                  fillColor: MaterialStateProperty.all(Colors.blue),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  value: false,
-                  onChanged: (value) {
-                    Future.delayed(const Duration(milliseconds: 100), () {
-                      deleteDatabase(todo.id.toString());
-                    });
-                  },
+              leading: GestureDetector(
+                onTap: () => {_deleteTodo(todo)},
+                child: Transform.scale(
+                  scale: 1.5,
+                  child: Icon(Icons.check_circle_outline, color: Colors.blue),
                 ),
               ),
               title: Text(todo.title),
