@@ -6,7 +6,6 @@ class DatabaseHelper {
   static final _databaseVersion = 1;
 
   static final table = 'books';
-
   static final columnId = 'id';
   static final columnTitle = 'title';
   static final columnAuthor = 'author';
