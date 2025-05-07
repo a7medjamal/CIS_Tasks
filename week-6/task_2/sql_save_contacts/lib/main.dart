@@ -5,6 +5,7 @@ import 'package:sql_save_contacts/data/repositories/contact_repository_impl.dart
 import 'package:sql_save_contacts/domain/usecases/add_contact.dart';
 import 'package:sql_save_contacts/domain/usecases/delete_contact.dart';
 import 'package:sql_save_contacts/domain/usecases/get_contacts.dart';
+import 'package:sql_save_contacts/domain/usecases/update_contact.dart';
 import 'package:sql_save_contacts/presentation/cubit/contact_cubit.dart';
 import 'package:sql_save_contacts/presentation/screens/contacts_screen.dart';
 
@@ -15,11 +16,13 @@ void main() {
   final getContacts = GetContacts(repository);
   final addContact = AddContact(repository);
   final deleteContact = DeleteContact(repository);
+  final updateContact = UpdateContact(repository);
   runApp(
     ContactManagementApp(
       getContacts: getContacts,
       addContact: addContact,
       deleteContact: deleteContact,
+      updateContact: updateContact,
     ),
   );
 }
@@ -28,21 +31,26 @@ class ContactManagementApp extends StatelessWidget {
   final GetContacts getContacts;
   final AddContact addContact;
   final DeleteContact deleteContact;
+  final UpdateContact updateContact;
 
   const ContactManagementApp({
     super.key,
     required this.getContacts,
     required this.addContact,
     required this.deleteContact,
+    required this.updateContact,
   });
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create:
-          (_) =>
-              ContactCubit(getContacts, addContact, deleteContact)
-                ..loadContacts(),
+          (_) => ContactCubit(
+            getContacts,
+            addContact,
+            deleteContact,
+            updateContact,
+          )..loadContacts(),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(primarySwatch: Colors.blue),

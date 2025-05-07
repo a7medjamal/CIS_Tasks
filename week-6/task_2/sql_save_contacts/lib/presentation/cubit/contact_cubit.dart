@@ -4,14 +4,20 @@ import '../../../domain/entities/contact.dart';
 import '../../../domain/usecases/add_contact.dart';
 import '../../../domain/usecases/delete_contact.dart';
 import '../../../domain/usecases/get_contacts.dart';
-
+import '../../../domain/usecases/update_contact.dart';
 
 class ContactCubit extends Cubit<ContactState> {
   final GetContacts getContacts;
   final AddContact addContact;
   final DeleteContact deleteContact;
+  final UpdateContact updateContact;
 
-  ContactCubit(this.getContacts, this.addContact, this.deleteContact) : super(ContactInitial());
+  ContactCubit(
+    this.getContacts,
+    this.addContact,
+    this.deleteContact,
+    this.updateContact,
+  ) : super(ContactInitial());
 
   void loadContacts() async {
     emit(ContactLoading());
@@ -26,6 +32,11 @@ class ContactCubit extends Cubit<ContactState> {
 
   void removeContact(int id) async {
     await deleteContact(id);
+    loadContacts();
+  }
+
+  void updateContactDetails(Contact contact) async {
+    await updateContact(contact);
     loadContacts();
   }
 }

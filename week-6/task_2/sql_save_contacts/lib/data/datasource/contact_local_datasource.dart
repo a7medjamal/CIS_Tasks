@@ -19,4 +19,14 @@ class ContactLocalDataSource {
     final db = await dbHelper.database;
     await db.delete('contacts', where: 'id = ?', whereArgs: [id]);
   }
+
+  Future<void> updateContact(ContactModel contact) async {
+    final db = await dbHelper.database;
+    await db.update(
+      'contacts',
+      contact.toMap(),
+      where: 'id = ?',
+      whereArgs: [contact.id],
+    );
+  }
 }

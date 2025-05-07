@@ -27,4 +27,15 @@ class ContactRepositoryImpl implements ContactRepository {
     final models = await dataSource.getContacts();
     return models;
   }
+
+  @override
+  Future<void> updateContact(Contact contact) async {
+    final model = ContactModel(
+      id: contact.id,
+      name: contact.name,
+      number: contact.number,
+      photoUrl: contact.photoUrl,
+    );
+    await dataSource.updateContact(model);
+  }
 }
