@@ -23,7 +23,11 @@ class DatabaseHelper {
 
   _initDatabase() async {
     String path = join(await getDatabasesPath(), _databaseName);
-    return await openDatabase(path, version: _databaseVersion, onCreate: _onCreate);
+    return await openDatabase(
+      path,
+      version: _databaseVersion,
+      onCreate: _onCreate,
+    );
   }
 
   Future _onCreate(Database db, int version) async {
@@ -35,5 +39,12 @@ class DatabaseHelper {
         $columnImage TEXT
       )
     ''');
+    // No default books added during initialization
+  }
+
+  Future<void> deleteDatabase() async {
+    String path = join(await getDatabasesPath(), _databaseName);
+    await databaseFactory.deleteDatabase(path);
+    _database = null;
   }
 }
