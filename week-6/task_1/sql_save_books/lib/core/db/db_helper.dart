@@ -9,7 +9,7 @@ class DatabaseHelper {
   static final columnId = 'id';
   static final columnTitle = 'title';
   static final columnAuthor = 'author';
-  static final columnImage = 'image';
+  static final columnImageUrl = 'imageUrl';
 
   DatabaseHelper._privateConstructor();
   static final DatabaseHelper instance = DatabaseHelper._privateConstructor();
@@ -36,7 +36,7 @@ class DatabaseHelper {
         $columnId INTEGER PRIMARY KEY AUTOINCREMENT,
         $columnTitle TEXT NOT NULL,
         $columnAuthor TEXT NOT NULL,
-        $columnImage TEXT
+        $columnImageUrl TEXT
       )
     ''');
     // No default books added during initialization

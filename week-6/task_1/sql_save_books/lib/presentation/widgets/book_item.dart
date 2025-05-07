@@ -11,6 +11,21 @@ class BookItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      leading:
+          book.imageUrl != null
+              ? ClipRRect(
+                borderRadius: BorderRadius.circular(4),
+                child: Image.network(
+                  book.imageUrl!,
+                  width: 70,
+                  height: 70,
+                  fit: BoxFit.cover,
+                  errorBuilder:
+                      (context, error, stackTrace) =>
+                          const Icon(Icons.book, size: 50, color: Colors.grey),
+                ),
+              )
+              : const Icon(Icons.book, size: 50, color: Colors.grey),
       title: Text(book.title, style: TextStyle(fontWeight: FontWeight.bold)),
       subtitle: Text('Author: ${book.author}'),
       trailing: IconButton(

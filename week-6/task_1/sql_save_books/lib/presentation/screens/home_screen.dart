@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sql_save_books/presentation/widgets/book_item.dart';
 import '../cubit/book_cubit.dart';
 import '../cubit/book_state.dart';
-import '../widgets/add_book_dialog.dart';
+import '../widgets/add_book_bottom_sheet.dart';
 import '../widgets/delete_all_books_dialog.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -11,7 +11,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    context.read<BookCubit>();
+    context.read<BookCubit>().loadBooks();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Available Books'),
@@ -50,9 +50,10 @@ class HomeScreen extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.blue,
         onPressed: () {
-          showDialog(
+          showModalBottomSheet(
             context: context,
-            builder: (context) => const AddBookDialog(),
+            isScrollControlled: true,
+            builder: (context) => const AddBookBottomSheet(),
           );
         },
         child: const Icon(Icons.add),

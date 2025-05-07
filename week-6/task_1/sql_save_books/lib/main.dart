@@ -11,12 +11,8 @@ import 'package:sql_save_books/presentation/screens/home_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-
-  // Initialize data source and repository
   final dataSource = BookLocalDataSource();
   final repository = BookRepositoryImpl(dataSource);
-
-  // Initialize use cases
   final getBooksUseCase = GetBooks(repository);
   final addBookUseCase = AddBook(repository);
   final deleteBookUseCase = DeleteBook(repository);
